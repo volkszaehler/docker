@@ -1,0 +1,23 @@
+version: "3.1"
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    working_dir: /application
+#    volumes:
+#      - ./data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=volkszaehler
+      - MYSQL_DATABASE=volkszaehler
+      - MYSQL_USER=vz
+      - MYSQL_PASSWORD=demo
+
+  volkszaehler:
+    image: volkszaehler
+#    build: ./image
+    container_name: runtime
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
