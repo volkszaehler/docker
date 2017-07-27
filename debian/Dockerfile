@@ -1,0 +1,48 @@
+FROM debian:stretch-slim
+
+MAINTAINER Andreas Goetz <cpuidle@gmx.de>
+
+ENV DEBIAN_FRONTEND noninteractive
+ENV SOURCE src
+ENV TARGET /volkszaehler
+ENV PHP_VER 7.0
+
+# install runtime environment
+
+RUN apt-get -q update \
+	&& apt-get -qy --no-install-recommends install \
+		ca-certificates \
+		php${PHP_VER}-cgi \
+		php${PHP_VER}-opcache \
+		php${PHP_VER}-mysql \
+		php${PHP_VER}-xml \
+		php${PHP_VER}-zip \
+		php${PHP_VER}-mbstring \
+	&& rm -rf /var/lib/apt/lists/*
+
+RUN apt-get -q update \
+	&& apt-get -qy --no-install-recommends install \
+		mysql-client \
+	&& rm -rf /var/lib/apt/lists/*
+
+# configure environment
+
+RUN sed -i "s/^.*opcache.enable_cli=.*/opcache.enable_cli=1/" /etc/php/${PHP_VER}/cli/php.ini
+RUN sed -i "s/^.*opcache.enable=.*/opcache.enable=1/" /etc/php/${PHP_VER}/cgi/php.ini
+RUN sed -i -re 's/^.*(disable_functions.*)/;\1/' /etc/php/${PHP_VER}/cgi/php.ini
+
+# copy sources
+
+COPY dist ${TARGET}
+
+# configure options
+
+COPY ${SOURCE}/bootstrap.sh ${TARGET}
+COPY ${SOURCE}/volkszaehler.conf.php ${TARGET}/etc
+COPY ${SOURCE}/ProcessSlave.php ${TARGET}/vendor/php-pm/php-pm
+COPY ${SOURCE}/options.js ${TARGET}/htdocs/js
+
+# runtime
+
+WORKDIR ${TARGET}
+CMD ${TARGET}/bootstrap.sh

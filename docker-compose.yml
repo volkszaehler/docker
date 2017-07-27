@@ -4,7 +4,6 @@ services:
   mysql:
     image: mysql:8.0
     container_name: mysql
-    working_dir: /application
 #    volumes:
 #      - ./data:/var/lib/mysql
     environment:
@@ -14,9 +13,8 @@ services:
       - MYSQL_PASSWORD=demo
 
   volkszaehler:
-    image: volkszaehler
-#    build: ./image
-    container_name: runtime
+    image: andig/volkszaehler:debian
+    container_name: volkszaehler
     ports:
       - "8080:8080"
     depends_on:
