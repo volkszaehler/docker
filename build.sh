@@ -9,5 +9,5 @@ docker run -v $(pwd)/dist:$TARGET build git clone https://github.com/volkszaehle
 docker run -v $(pwd)/dist:$TARGET build php composer.phar install -d $TARGET --optimize-autoloader --no-dev
 
 # runtime image
-docker build -t andig/volkszaehler:raspbian -f ./raspbian/Dockerfile .
 docker build -t andig/volkszaehler:debian -f ./debian/Dockerfile .
+docker build -t andig/volkszaehler:raspbian -f ./raspbian/Dockerfile .

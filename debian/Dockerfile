@@ -2,10 +2,11 @@ FROM debian:stretch-slim
 
 MAINTAINER Andreas Goetz <cpuidle@gmx.de>
 
+ARG SOURCE=src
+ARG TARGET=/volkszaehler
+ARG PHP_VER=7.0
+
 ENV DEBIAN_FRONTEND noninteractive
-ENV SOURCE src
-ENV TARGET /volkszaehler
-ENV PHP_VER 7.0
 
 # install runtime environment
 
@@ -18,10 +19,6 @@ RUN apt-get -q update \
 		php${PHP_VER}-xml \
 		php${PHP_VER}-zip \
 		php${PHP_VER}-mbstring \
-	&& rm -rf /var/lib/apt/lists/*
-
-RUN apt-get -q update \
-	&& apt-get -qy --no-install-recommends install \
 		mysql-client \
 	&& rm -rf /var/lib/apt/lists/*
 
@@ -37,7 +34,7 @@ COPY dist ${TARGET}
 
 # configure options
 
-COPY ${SOURCE}/bootstrap.sh ${TARGET}
+COPY ${SOURCE}/bootstrap.sh /
 COPY ${SOURCE}/volkszaehler.conf.php ${TARGET}/etc
 COPY ${SOURCE}/ProcessSlave.php ${TARGET}/vendor/php-pm/php-pm
 COPY ${SOURCE}/options.js ${TARGET}/htdocs/js
@@ -45,4 +42,4 @@ COPY ${SOURCE}/options.js ${TARGET}/htdocs/js
 # runtime
 
 WORKDIR ${TARGET}
-CMD ${TARGET}/bootstrap.sh
+CMD /bootstrap.sh
