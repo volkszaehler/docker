@@ -29,7 +29,7 @@ If not already running, start a mysql database using the volkszaehler credential
 
 Then the actual volkszaehler image can be started:
 
-	docker run --link $DATABASE:mysql -p 8080:8080 andig/volkszaehler:debian
+	docker run --link $DATABASE:mysql -p 8080:8080 -t andig/volkszaehler:debian
 
 This exposes both frontend and middleware at port `8080`. The database schema will automatically be created or updated.
 

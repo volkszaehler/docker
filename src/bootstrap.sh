@@ -4,7 +4,7 @@ set -e
 
 echo "Waiting for database"
 
-until mysqladmin ping -h mysql -pvolkszaehler >/dev/null 2>&1; do
+until netcat mysql 3306 >/dev/null 2>&1; do
 	echo -n "."; sleep 1
 done
 

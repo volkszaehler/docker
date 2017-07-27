@@ -19,7 +19,7 @@ RUN apt-get -q update \
 		php${PHP_VER}-xml \
 		php${PHP_VER}-zip \
 		php${PHP_VER}-mbstring \
-		mysql-client \
+		netcat \
 	&& rm -rf /var/lib/apt/lists/*
 
 # configure environment
