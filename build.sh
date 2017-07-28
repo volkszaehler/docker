@@ -10,6 +10,6 @@ docker run -v $(pwd)/dist:$TARGET -t build php composer.phar install -d $TARGET 
 
 # runtime image
 if [ -z $1 ] || [ "$1" != "build" ] ; then
-docker build -t andig/volkszaehler:debian -f Dockerfile.amd64 .
-docker build -t andig/volkszaehler:raspbian -f Dockerfile.rpi .
+	docker build -t andig/volkszaehler -f Dockerfile.amd64 .
+	docker build -t andig/rpi-volkszaehler -f Dockerfile.rpi .
 fi
