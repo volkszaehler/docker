@@ -11,6 +11,7 @@ RUN apt-get -q update
 RUN apt-get -qy --no-install-recommends install \
 	php${PHP_VER}-cli \
 	php${PHP_VER}-mysql \
+	php${PHP_VER}-xml \
 	php${PHP_VER}-zip \
 	git \
 	ca-certificates
