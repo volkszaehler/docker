@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 TARGET=/to_host
 
 # builder image
@@ -9,7 +9,7 @@ docker run -v $(pwd)/dist:$TARGET -t build git clone https://github.com/volkszae
 docker run -v $(pwd)/dist:$TARGET -t build php composer.phar install -d $TARGET --optimize-autoloader --no-dev
 
 # runtime image
-if [ -z $1 ] || [ "$1" !== "build" ] ; then
-docker build -t andig/volkszaehler:debian -f ./debian/Dockerfile .
-docker build -t andig/volkszaehler:raspbian -f ./raspbian/Dockerfile .
+if [ -z $1 ] || [ "$1" != "build" ] ; then
+docker build -t andig/volkszaehler:debian -f Dockerfile.amd64 .
+docker build -t andig/volkszaehler:raspbian -f Dockerfile.rpi .
 fi
