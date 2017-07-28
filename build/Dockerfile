@@ -2,8 +2,9 @@ FROM debian:stretch-slim
 
 MAINTAINER Andreas Goetz <cpuidle@gmx.de>
 
+ARG PHP_VER=7.0
+
 ENV DEBIAN_FRONTEND noninteractive
-ENV PHP_VER 7.0
 
 # install runtime environment
 
