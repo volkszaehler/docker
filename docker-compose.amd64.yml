@@ -2,7 +2,7 @@ version: "3.1"
 services:
 
   mysql:
-    image: hypriot/rpi-mysql
+    image: resin/rpi-mysql
     container_name: mysql
 #    volumes:
 #      - ./data:/var/lib/mysql

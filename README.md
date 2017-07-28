@@ -3,14 +3,15 @@
 
 Docker image for volkszaehler middleware and frontend
 
+
 ## Installing
 
 To run this image simply pull the built version for your architecture from docker hub (https://hub.docker.com/r/andig/volkszaehler/):
 
-	docker pull andig/volkszaehler:debian
-	docker pull andig/volkszaehler:raspbian
+	docker pull andig/volkszaehler
+	docker pull andig/rpi-volkszaehler
 
-The `debian` image will work on x86 architectures, the `raspbian` image supports ARM platforms like the Raspberry Pi.
+The first image will work on x86 architectures, the `rpi` image supports ARM platforms like the Raspberry Pi.
 
 For maximum flexibility, the image does NOT contain a database itself but expects a mysql database at host `mysql` with standard volkszaehler credentials:
 
@@ -19,7 +20,8 @@ For maximum flexibility, the image does NOT contain a database itself but expect
       - MYSQL_USER=vz
       - MYSQL_PASSWORD=demo
 
-## Running
+
+## Running on x86
 
 If not already running, start a mysql database using the volkszaehler credentials and get it's container id:
 
@@ -29,15 +31,25 @@ If not already running, start a mysql database using the volkszaehler credential
 
 Then the actual volkszaehler image can be started:
 
-	docker run --link $DATABASE:mysql -p 8080:8080 -t andig/volkszaehler:debian
+	docker run --link $DATABASE:mysql -p 8080:8080 -t andig/volkszaehler
 
 This exposes both frontend and middleware at port `8080`. The database schema will automatically be created or updated.
+
+
+## Running on Raspberry Pi
+
+See section before but select the docker images for the ARM architecture:
+
+	DATABASE=$(docker run -d -e MYSQL_ROOT_PASSWORD=volkszaehler -e MYSQL_DATABASE=volkszaehler -e MYSQL_USER=vz -e MYSQL_PASSWORD=demo --name mysql hypriot/rpi-mysql)
+
+	docker run --link $DATABASE:mysql -p 8080:8080 -t andig/rpi-volkszaehler
 
 This setup is already available by using the pre-composed `docker-compose.yml` configuration consisting of MySQL database and volkszaehler runtime:
 
 	docker-composer up
 
 **NOTE** To persist the database, update `docker-compose.yml` and make sure that the MySQL data folder is mapped to a folder on the docker host machine.
+
 
 ## Building
 

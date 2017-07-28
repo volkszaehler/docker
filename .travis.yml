@@ -1,0 +1,31 @@
+sudo: required
+language: bash
+services:
+  - docker
+
+env:
+  matrix:
+    - ARCH=x86_64
+      DOCKER_BUILD=andig/volkszaehler
+      DOCKERFILE=Dockerfile.amd64
+    - ARCH=rpi
+      DOCKER_BUILD=andig/rpi-volkszaehler
+      DOCKERFILE=Dockerfile.rpi
+
+script:
+  # enable multi-arch (https://stackoverflow.com/questions/39432668/travis-multi-architecture-buiilds)
+  - docker run --rm --privileged multiarch/qemu-user-static:register
+  # Build the sources
+  - ./build.sh build
+
+after_success:
+  # Push successful builds of the master branch to Docker Hub
+  # You need to define $DOCKER_REPO_PREFIX, $DOCKER_REPO_NAME, $DOCKER_USERNAME and $DOCKER_PASSWORD in your Travis settings.
+  # $DOCKER_REPO_PREFIX - Organisation of username who owns the repo on Docker Hub
+  # $DOCKER_REPO_NAME   - Repository name on Docker Hub
+  # $DOCKER_USERNAME    - Docker Hub username used to push the image
+  # $DOCKER_PASSWORD    - Password of the Docker Hub user used to push the image
+  # See https://docs.travis-ci.com/user/environment-variables/#Defining-Variables-in-Repository-Settings
+  - docker build -t ${DOCKER_BUILD} -f ${DOCKERFILE} .
+  - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD || false'
+  - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && docker push ${DOCKER_BUILD} || false'
