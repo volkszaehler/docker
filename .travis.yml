@@ -8,13 +8,14 @@ services:
 #  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
 #  - sudo apt-get install -y openssl parallel
 
-matrix:
-  - ARCH=x86_64
-    DOCKER_BUILD=andig/volkszaehler
-    DOCKERFILE=Dockerfile.amd64
-  - ARCH=rpi
-    DOCKER_BUILD=andig/rpi-volkszaehler
-    DOCKERFILE=Dockerfile.rpi
+env:
+  matrix:
+    - ARCH=x86_64
+      DOCKER_BUILD=andig/volkszaehler
+      DOCKERFILE=Dockerfile.amd64
+    - ARCH=rpi
+      DOCKER_BUILD=andig/rpi-volkszaehler
+      DOCKERFILE=Dockerfile.rpi
 
 script:
   # enable multi-arch (https://stackoverflow.com/questions/39432668/travis-multi-architecture-buiilds)
