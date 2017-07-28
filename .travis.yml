@@ -38,5 +38,5 @@ after_success:
 #    docker run --rm -v "$(pwd)/:/data/:ro" -e "DOCKERHUB_USERNAME=$DOCKER_USERNAME" -e "DOCKERHUB_PASSWORD=$DOCKER_PASSWORD" -e "DOCKERHUB_REPO_PREFIX=$DOCKER_REPO_PREFIX" -e "DOCKERHUB_REPO_NAME=$DOCKER_REPO_NAME" sheogorath/readme-to-dockerhub;
 #    fi
   - docker build -t ${DOCKER_BUILD} -f ${DOCKERFILE} .
-  - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && docker login -e $DOCKER_EMAIL -u $DOCKER_USERNAME -p $DOCKER_PASSWORD || false'
+  - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD || false'
   - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && docker push ${DOCKER_BUILD} || false'
