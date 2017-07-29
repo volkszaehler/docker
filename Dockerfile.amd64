@@ -36,7 +36,6 @@ COPY dist ${TARGET}
 
 COPY ${SOURCE}/bootstrap.sh /
 COPY ${SOURCE}/volkszaehler.conf.php ${TARGET}/etc
-COPY ${SOURCE}/ProcessSlave.php ${TARGET}/vendor/php-pm/php-pm
 COPY ${SOURCE}/options.js ${TARGET}/htdocs/js
 
 # runtime
